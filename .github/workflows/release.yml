@@ -14,4 +14,4 @@ jobs:
         run: |
           COMMIT_MSG="${{ github.event.head_commit.message }}"
           COMMIT_TITLE="${COMMIT_MSG%%$'\n'*}"
-          echo COMMIT_TITLE
+          echo "${COMMIT_TITLE}"
