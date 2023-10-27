@@ -12,15 +12,6 @@ jobs:
       - uses: actions/setup-node@v3
       - name: check commit name
         run: |
-          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
-          PACKAGE_VERSION="${GITHUB_REF##*/}"
-          echo branch=${BRANCH_NAME} >> $GITHUB_OUTPUT
-          echo version=${PACKAGE_VERSION} >> $GITHUB_OUTPUT
-          echo "${GITHUB_REF}"
           COMMIT_MSG="${{ github.event.head_commit.message }}"
-          echo "${COMMIT_MSG%%$'\n'*}"
-          echo "${GITHUB_REF#*/}"
-          echo "${GITHUB_REF##/}"
-          echo "${GITHUB_REF#*/}"
-          echo "${BRANCH_NAME}"
-          echo "${PACKAGE_VERSION}"
+          COMMIT_TITLE="${COMMIT_MSG%%$'\n'*}"
+          echo COMMIT_TITLE
