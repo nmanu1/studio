@@ -17,7 +17,7 @@ jobs:
           echo branch=${BRANCH_NAME} >> $GITHUB_OUTPUT
           echo version=${PACKAGE_VERSION} >> $GITHUB_OUTPUT
           echo "${GITHUB_REF}"
-          echo "${!GITHUB_EVENT[@]}"
+          echo "${{ github.event.head_commit.message }}"
           echo "${GITHUB_REF#*/}"
           echo "${GITHUB_REF##/}"
           echo "${GITHUB_REF#*/}"
