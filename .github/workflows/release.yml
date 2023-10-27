@@ -16,5 +16,5 @@ jobs:
           PACKAGE_VERSION="${GITHUB_REF##*/}"
           echo branch=${BRANCH_NAME} >> $GITHUB_OUTPUT
           echo version=${PACKAGE_VERSION} >> $GITHUB_OUTPUT
-          echo "${branch}"
-          echo "${version}"
+          echo "${BRANCH_NAME}"
+          echo "${PACKAGE_VERSION}"
