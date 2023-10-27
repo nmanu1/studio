@@ -1,0 +1,18 @@
+name: Release Studio
+on:
+  push:
+    # branches: main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: startWith(github.event.head_commit.message, fromJSON('["GH conditional", "test"]'))
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - name: check commit name
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          PACKAGE_VERSION="${GITHUB_REF##*/}"
+          echo branch=${BRANCH_NAME} >> $GITHUB_OUTPUT
+          echo version=${PACKAGE_VERSION} >> $GITHUB_OUTPUT
