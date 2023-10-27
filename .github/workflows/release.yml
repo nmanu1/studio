@@ -15,9 +15,9 @@ jobs:
           COMMIT_MSG="${{ github.event.head_commit.message }}"
           COMMIT_TITLE="${COMMIT_MSG%%$'\n'*}"
           echo "${COMMIT_TITLE}"
-          if [[ $COMMIT_TITLE =~ ^v[0-9]+\.[0-9]+\.[0-9]+( \(#[0-9]+\))?$ ]]
+          if [[ $COMMIT_TITLE =~ ^(v|Version )[0-9]+\.[0-9]+\.[0-9]+( \(#[0-9]+\))?$ ]]
           then
-            echo "matched first regex"
+            echo "matched regex"
           else
             echo "did not match"
           fi
