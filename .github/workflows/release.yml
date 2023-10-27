@@ -20,7 +20,7 @@ jobs:
             echo "matched regex"
             PACKAGE_VERSION="${COMMIT_TITLE#Version }"
             PACKAGE_VERSION="${PACKAGE_VERSION#v}"
-            PACKAGE_VERSION="${PACKAGE_VERSION%% }"
+            PACKAGE_VERSION="${PACKAGE_VERSION%%$' '}"
             echo "${PACKAGE_VERSION}"
           else
             echo "did not match"
