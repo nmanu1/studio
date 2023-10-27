@@ -6,7 +6,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: startsWith(github.event.head_commit.message, fromJSON('["single"]'))
+    if: startsWith(github.event.head_commit.message, 'simple')
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
