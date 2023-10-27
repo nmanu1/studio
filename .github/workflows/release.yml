@@ -6,7 +6,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: startsWith(github.event.head_commit.message, 'simple')
+    # if: startsWith(github.event.head_commit.message, 'simple')
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -16,3 +16,5 @@ jobs:
           PACKAGE_VERSION="${GITHUB_REF##*/}"
           echo branch=${BRANCH_NAME} >> $GITHUB_OUTPUT
           echo version=${PACKAGE_VERSION} >> $GITHUB_OUTPUT
+          echo branch
+          echo version
