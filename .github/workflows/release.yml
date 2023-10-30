@@ -11,6 +11,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
       - name: check commit name
+        id: vars
         run: |
           COMMIT_MSG="${{ github.event.head_commit.message }}"
           COMMIT_TITLE="${COMMIT_MSG%%$'\n'*}"
@@ -22,6 +23,39 @@ jobs:
             PACKAGE_VERSION="${PACKAGE_VERSION#v}"
             PACKAGE_VERSION="${PACKAGE_VERSION%% *}"
             echo "${PACKAGE_VERSION}"
+            echo version=${PACKAGE_VERSION} >> $GITHUB_OUTPUT
           else
             echo "did not match"
           fi
+      - name: check package versions
+        run: |
+          if node ./bump-versions.mjs ${{ steps.vars.outputs.version }} &> temp-bump-versions.txt
+          then
+            echo "Package versions did not match ${{ steps.vars.outputs.version }}."
+            exit 1
+          fi
+          if [[
+            grep -zq '...bumping studio-plugin\nnpm ERR! Version not changed' temp-bump-versions.txt &&
+            grep -zq '...bumping studio-ui\nnpm ERR! Version not changed' temp-bump-versions.txt &&
+            grep -zq '...bumping studio\nnpm ERR! Version not changed' temp-bump-versions.txt
+          ]]
+          then
+            if git diff --exit-code
+            then
+              exit 0
+            fi
+            echo "Found unexpected git diff from running the bump-versions.mjs script."
+            exit 1
+          fi
+          cat temp-bump-versions.txt
+          exit 1
+      - name: check linting
+        run: |
+          npm run autofix
+          if git diff --exit-code
+            exit 0
+          fi
+          echo "Found unexpected git diff from running `npm run autofix`."
+          exit 1
+      - name: run tests
+        uses: ./.github/workflows/run-tests.yml

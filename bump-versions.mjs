@@ -25,8 +25,18 @@ function readJson(filepath) {
 }
 
 function main() {
-  bumpPackage("studio-plugin");
-  bumpPackage("studio-ui");
+  try {
+    bumpPackage("studio-plugin");
+  } catch (e) {
+    console.error(e)
+  }
+  
+  try {
+    bumpPackage("studio-ui");
+  } catch (e) {
+    console.error(e)
+  }
+  
   bumpStudio();
 }
 
