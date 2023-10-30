@@ -4,7 +4,7 @@ on:
     # branches: main
 
 jobs:
-  release:
+  check-for-release:
     runs-on: ubuntu-latest
     # if: startsWith(github.event.head_commit.message, 'simple')
     steps:
@@ -49,5 +49,18 @@ jobs:
           echo "Error running the bump-version.mjs script."
           cat temp-bump-versions.txt
           exit 1
-      - name: run tests
-        uses: ./.github/workflows/run-tests.yml
+      # - uses: ./.github/setup-ci
+      # - name: check linting
+      #   run: |
+      #     npm run autofix
+      #     if git diff --exit-code
+      #       exit 0
+      #     fi
+      #     echo "Found unexpected git diff from running `npm run autofix`."
+      #     exit 1
+      # - name: run tests
+      #   uses: ./.github/workflows/run-tests.yml
+    
+  run-tests:
+    needs: check-for-release
+    uses: ./.github/workflows/run-tests.yml
