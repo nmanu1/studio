@@ -41,8 +41,7 @@ jobs:
           then
             if git diff --exit-code
             then
-              echo "Success"
-              exit 1
+              exit 0
             fi
             echo "Found unexpected git diff from running the bump-versions.mjs script."
             exit 1
