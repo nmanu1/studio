@@ -6,8 +6,8 @@ on:
 jobs:
   check-for-release:
     runs-on: ubuntu-latest
-    # outputs:
-    #   status: ${{ join(steps.*.conclusion) }}
+    outputs:
+      status: ${{ steps.check_versions.conclusion }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -24,12 +24,13 @@ jobs:
             PACKAGE_VERSION="${PACKAGE_VERSION#v}"
             PACKAGE_VERSION="${PACKAGE_VERSION%% *}"
             echo version=${PACKAGE_VERSION} >> $GITHUB_OUTPUT
+            echo should_continue=1 >> ${GITHUB_OUTPUT}
           else
-            gh run cancel ${{ github.run_id }}
-            gh run watch ${{ github.run_id }}
+            echo should_continue=0 >> ${GITHUB_OUTPUT}
           fi
       - name: check package versions
-        # if: steps.vars.outputs.should_continue == 1
+        id: check_versions
+        if: steps.vars.outputs.should_continue == 1
         run: |
           if node ./bump-versions.mjs ${{ steps.vars.outputs.version }} &> temp-bump-versions.txt
           then
@@ -65,5 +66,5 @@ jobs:
     
   run-tests:
     needs: check-for-release
-    # if: !contains(needs.check-for-release.outputs.status, 'skipped')
+    if: needs.check-for-release.outputs.status === "success"
     uses: ./.github/workflows/run-tests.yml
