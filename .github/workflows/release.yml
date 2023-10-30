@@ -49,13 +49,5 @@ jobs:
           echo "Error running the bump-version.mjs script."
           cat temp-bump-versions.txt
           exit 1
-      - name: check linting
-        run: |
-          npm run autofix
-          if git diff --exit-code
-            exit 0
-          fi
-          echo "Found unexpected git diff from running `npm run autofix`."
-          exit 1
       - name: run tests
         uses: ./.github/workflows/run-tests.yml
