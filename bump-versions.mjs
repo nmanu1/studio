@@ -31,7 +31,7 @@ function main() {
   try {
     bumpPackage("studio-plugin");
   } catch (e) {
-    console.error(e);
+    console.error(e)
   }
 
   try {
