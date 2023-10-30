@@ -76,6 +76,7 @@ jobs:
   run-acceptance:
     needs: check-for-release
     if: needs.check-for-release.outputs.status == 'success'
+    runs-on: ubuntu-latest
     steps:
       - run: echo "Placeholder"
     # uses: ./.github/workflows/playwright.yml
