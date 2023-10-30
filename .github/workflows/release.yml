@@ -24,13 +24,12 @@ jobs:
             PACKAGE_VERSION="${PACKAGE_VERSION#v}"
             PACKAGE_VERSION="${PACKAGE_VERSION%% *}"
             echo version=${PACKAGE_VERSION} >> $GITHUB_OUTPUT
-            echo should_continue=1 >> ${GITHUB_OUTPUT}
           else
-            echo should_continue=0 >> ${GITHUB_OUTPUT}
             gh run cancel ${{ github.run_id }}
+            gh run watch ${{ github.run_id }}
           fi
       - name: check package versions
-        if: steps.vars.outputs.should_continue == 1
+        # if: steps.vars.outputs.should_continue == 1
         run: |
           if node ./bump-versions.mjs ${{ steps.vars.outputs.version }} &> temp-bump-versions.txt
           then
