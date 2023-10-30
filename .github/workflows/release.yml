@@ -67,6 +67,7 @@ jobs:
             exit 0
           fi
           echo "Found unexpected git diff from running `npm run autofix`."
+          gh run cancel ${{ github.run_id }}
           exit 1
     
   run-tests:
