@@ -35,7 +35,7 @@ jobs:
             exit 1
           fi
           if
-            grep -zq 'npm ERR! Version not changed' temp-bump-versions.txt
+            grep -zq 'bumping studio-plugin' temp-bump-versions.txt
           then
             if git diff --exit-code
             then
