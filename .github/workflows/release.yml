@@ -66,5 +66,5 @@ jobs:
     
   run-tests:
     needs: check-for-release
-    if: ${{ needs.check-for-release.outputs.status == "success" }}
+    if: needs.check-for-release.outputs.status == 'success'
     uses: ./.github/workflows/run-tests.yml
