@@ -27,7 +27,7 @@ jobs:
             echo should_continue=1 >> ${GITHUB_OUTPUT}
           else
             echo should_continue=0 >> ${GITHUB_OUTPUT}
-            gh run cancel vars
+            gh run cancel ${{ github.run_id }}
           fi
       - name: check package versions
         if: steps.vars.outputs.should_continue == 1
