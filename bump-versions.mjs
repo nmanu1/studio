@@ -8,7 +8,10 @@ function bumpStudio() {
   const packageJson = readJson(packageJsonPath);
   packageJson.dependencies["@yext/studio-plugin"] = newVersion;
   packageJson.dependencies["@yext/studio-ui"] = newVersion;
-  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + "\n");
+  fs.writeFileSync(
+    packageJsonPath,
+    JSON.stringify(packageJson, null, 2) + "\n"
+  );
   bumpPackage("studio");
   execSync("npm i");
 }
@@ -28,15 +31,15 @@ function main() {
   try {
     bumpPackage("studio-plugin");
   } catch (e) {
-    console.error(e)
+    console.error(e);
   }
-  
+
   try {
     bumpPackage("studio-ui");
   } catch (e) {
-    console.error(e)
+    console.error(e);
   }
-  
+
   bumpStudio();
 }
 
