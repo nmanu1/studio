@@ -72,3 +72,10 @@ jobs:
     needs: check-for-release
     if: needs.check-for-release.outputs.status == 'success'
     uses: ./.github/workflows/run-tests.yml
+
+  run-acceptance:
+    needs: check-for-release
+    if: needs.check-for-release.outputs.status == 'success'
+    uses: ./.github/workflows/playwright.yml
+    with:
+      test_script: npm run playwright
