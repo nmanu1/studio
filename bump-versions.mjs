@@ -8,7 +8,7 @@ function bumpStudio() {
   const packageJson = readJson(packageJsonPath);
   packageJson.dependencies["@yext/studio-plugin"] = newVersion;
   packageJson.dependencies["@yext/studio-ui"] = newVersion;
-  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + "\n");
   bumpPackage("studio");
   execSync("npm i");
 }
