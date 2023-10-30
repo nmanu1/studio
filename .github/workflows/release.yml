@@ -77,7 +77,7 @@ jobs:
     needs: check-for-release
     if: needs.check-for-release.outputs.status == 'success'
     steps:
-      run: echo "Placeholder"
+      - run: echo "Placeholder"
     # uses: ./.github/workflows/playwright.yml
     # with:
     #   test_script: npm run playwright
