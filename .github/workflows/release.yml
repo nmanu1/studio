@@ -6,7 +6,6 @@ on:
 jobs:
   check-for-release:
     runs-on: ubuntu-latest
-    # if: startsWith(github.event.head_commit.message, 'simple')
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -15,18 +14,15 @@ jobs:
         run: |
           COMMIT_MSG="${{ github.event.head_commit.message }}"
           COMMIT_TITLE="${COMMIT_MSG%%$'\n'*}"
-          echo "${COMMIT_TITLE}"
           if [[ $COMMIT_TITLE =~ ^(v|Version )[0-9]+\.[0-9]+\.[0-9]+( \(#[0-9]+\))?$ ]]
           then
-            echo "matched regex"
             PACKAGE_VERSION="${COMMIT_TITLE#Version }"
             PACKAGE_VERSION="${PACKAGE_VERSION#v}"
             PACKAGE_VERSION="${PACKAGE_VERSION%% *}"
-            echo "${PACKAGE_VERSION}"
             echo version=${PACKAGE_VERSION} >> $GITHUB_OUTPUT
-          else
-            echo "did not match"
+            exit 0
           fi
+          exit 1
       - name: check package versions
         run: |
           if node ./bump-versions.mjs ${{ steps.vars.outputs.version }} &> temp-bump-versions.txt
