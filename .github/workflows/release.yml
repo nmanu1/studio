@@ -79,3 +79,7 @@ jobs:
     uses: ./.github/workflows/playwright.yml
     with:
       test_script: npm run playwright
+  
+  call-publish:
+    needs: [check-linting, run-tests, run-acceptance]
+    uses: ./.github/workflows/publish-hold.yml

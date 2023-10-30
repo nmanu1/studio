@@ -1,0 +1,25 @@
+name: Publish to npm with hold state
+
+on:
+  workflow_call:
+    secrets:
+      NPM_TOKEN:
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: production # set in github repo with reviewer requirement protection rule
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/setup-ci
+      - run: npm run build
+      - run: cd ./packages/studio-plugin && npm publish --dry-run=true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: cd ./pacakages/studio-ui && npm publish --dry-run=true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: cd ./packages/studio && npm publish --dry-run=true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
