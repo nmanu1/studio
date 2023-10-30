@@ -34,7 +34,19 @@ jobs:
             echo "Package versions did not match ${{ steps.vars.outputs.version }}."
             exit 1
           fi
-          echo "FAIL"
+          if
+            grep -zq '... bumping studio-plugin\nnpm ERR! Version not changed' temp-bump-versions.txt &&
+            grep -zq '... bumping studio-ui\nnpm ERR! Version not changed' temp-bump-versions.txt &&
+            grep -zq '... bumping studio\nnpm ERR! Version not changed' temp-bump-versions.txt
+          then
+            if git diff --exit-code
+            then
+              exit 0
+            fi
+            echo "Found unexpected git diff from running the bump-versions.mjs script."
+            exit 1
+          fi
+          echo "Error running the bump-version.mjs script."
           cat temp-bump-versions.txt
           exit 1
       - name: check linting
