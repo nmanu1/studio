@@ -55,6 +55,7 @@ jobs:
 
   check-linting:
     needs: check-for-release
+    runs-on: ubuntu-latest
     if: needs.check-for-release.outputs.status == 'success'
     steps:
       - uses: actions/checkout@v3
