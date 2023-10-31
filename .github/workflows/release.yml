@@ -1,7 +1,7 @@
 name: Release Studio
 on:
   push:
-    # branches: main
+    branches: main
 
 jobs:
   check-for-release:
@@ -71,20 +71,20 @@ jobs:
   run-tests:
     needs: check-for-release
     if: needs.check-for-release.outputs.status == 'success'
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Placeholder"
-    # uses: ./.github/workflows/run-tests.yml
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: echo "Placeholder"
+    uses: ./.github/workflows/run-tests.yml
 
   run-acceptance:
     needs: check-for-release
     if: needs.check-for-release.outputs.status == 'success'
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Placeholder"
-    # uses: ./.github/workflows/playwright.yml
-    # with:
-    #   test_script: npm run playwright
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - run: echo "Placeholder"
+    uses: ./.github/workflows/playwright.yml
+    with:
+      test_script: npm run playwright
   
   call-publish:
     needs: [check-linting, run-tests, run-acceptance]
