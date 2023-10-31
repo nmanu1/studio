@@ -1,7 +1,7 @@
 name: Release Studio
 on:
   push:
-    branches: main
+    branches: test/release-workflow
 
 jobs:
   check-for-release:
@@ -9,8 +9,8 @@ jobs:
     outputs:
       status: ${{ steps.check_versions.conclusion }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      # - uses: actions/checkout@v3
+      # - uses: actions/setup-node@v3
       - name: check commit name
         id: vars
         run: |
@@ -58,10 +58,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/setup-ci
-      - name: eslint check
-        run: npx eslint --max-warnings=0 .
-      - name: prettier check
-        run: npx prettier --check .
+      - run: npx eslint --max-warnings=0 .
+      - run: npx prettier --check .
       - name: cancel workflow
         if: ${{ failure() }}
         run: gh run cancel ${{ github.run_id }}
@@ -71,17 +69,11 @@ jobs:
   run-tests:
     needs: check-for-release
     if: needs.check-for-release.outputs.status == 'success'
-    # runs-on: ubuntu-latest
-    # steps:
-    #   - run: echo "Placeholder"
     uses: ./.github/workflows/run-tests.yml
 
   run-acceptance:
     needs: check-for-release
     if: needs.check-for-release.outputs.status == 'success'
-    # runs-on: ubuntu-latest
-    # steps:
-    #   - run: echo "Placeholder"
     uses: ./.github/workflows/playwright.yml
     with:
       test_script: npm run playwright
