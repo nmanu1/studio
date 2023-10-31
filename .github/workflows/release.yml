@@ -89,3 +89,5 @@ jobs:
   call-publish:
     needs: [check-linting, run-tests, run-acceptance]
     uses: ./.github/workflows/publish-hold.yml
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
